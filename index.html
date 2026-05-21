@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OrigamiaaByNavish — Handcrafted Paper Art</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero__left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: calc(var(--nav-h) + 4rem) 4rem 4rem 2rem;
+      padding-left: max(2rem, calc((100vw - var(--max-w)) / 2 + 2rem));
+    }
+
+    .hero__tagline {
+      font-size: clamp(0.65rem, 1vw, 0.78rem);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero__tagline::before {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--rust);
+    }
+
+    .hero__title { margin-bottom: 1.5rem; }
+    .hero__title em { font-style: italic; color: var(--rust); }
+
+    .hero__sub {
+      font-size: 1rem;
+      color: var(--ink-light);
+      line-height: 1.9;
+      max-width: 420px;
+      margin-bottom: 3rem;
+    }
+
+    .hero__cta { display: flex; gap: 1.2rem; flex-wrap: wrap; align-items: center; }
+
+    .hero__scroll {
+      position: absolute;
+      bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-6px); }
+    }
+
+    .hero__right {
+      background: var(--cream-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero__artwork {
+      font-size: 14rem;
+      animation: float 4s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 20px 40px rgba(26,20,16,0.15));
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-20px) rotate(3deg); }
+    }
+
+    .hero__right-deco {
+      position: absolute;
+      font-size: 5rem;
+      opacity: 0.12;
+    }
+
+    .hero__right-deco:nth-child(2) { top: 10%; left: 10%; font-size: 4rem; }
+    .hero__right-deco:nth-child(3) { top: 20%; right: 5%; animation: float 5s ease-in-out infinite 1s; }
+    .hero__right-deco:nth-child(4) { bottom: 15%; left: 8%; animation: float 6s ease-in-out infinite 0.5s; }
+    .hero__right-deco:nth-child(5) { bottom: 10%; right: 10%; font-size: 3rem; }
+
+    /* ── Stats Bar ── */
+    .stats-bar {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 2.5rem 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      text-align: center;
+    }
+
+    .stat__number {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--gold);
+      display: block;
+    }
+
+    .stat__label {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.5);
+      margin-top: 0.3rem;
+    }
+
+    /* ── Categories ── */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.2rem;
+    }
+
+    .cat-card {
+      background: var(--cream);
+      border: 1px solid rgba(26,20,16,0.07);
+      border-radius: var(--radius);
+      padding: 2rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .cat-card:hover {
+      background: var(--ink);
+      color: var(--cream);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px var(--shadow);
+    }
+
+    .cat-card__icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+    .cat-card__name {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+    }
+    .cat-card__count { font-size: 0.72rem; letter-spacing: 0.1em; opacity: 0.55; }
+
+    /* ── Process / How it works ── */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      position: relative;
+    }
+
+    .process-grid::before {
+      content: '';
+      position: absolute;
+      top: 2.5rem; left: 12%;
+      width: 76%; height: 1px;
+      background: linear-gradient(to right, var(--rust), var(--gold), var(--rust));
+      opacity: 0.25;
+    }
+
+    .process-step { text-align: center; }
+    .process-step__num {
+      width: 48px; height: 48px;
+      border: 1.5px solid var(--rust);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--rust);
+      margin: 0 auto 1.2rem;
+      background: var(--paper);
+      position: relative;
+      z-index: 1;
+    }
+
+    .process-step__icon { font-size: 2rem; margin-bottom: 0.8rem; }
+    .process-step h4 { font-family: var(--font-display); margin-bottom: 0.5rem; }
+    .process-step p { font-size: 0.85rem; color: var(--ink-light); line-height: 1.8; }
+
+    /* ── Testimonials ── */
+    .testimonials-track {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .testimonial-card {
+      background: var(--cream);
+      border: 1px solid rgba(26,20,16,0.07);
+      border-radius: var(--radius);
+      padding: 2rem;
+    }
+
+    .testimonial-card__stars { color: var(--gold); font-size: 1rem; margin-bottom: 1rem; }
+    .testimonial-card__text {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-card__author { display: flex; align-items: center; gap: 0.8rem; }
+    .testimonial-card__avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--cream-dark);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .testimonial-card__name { font-size: 0.85rem; font-weight: 500; }
+    .testimonial-card__loc { font-size: 0.72rem; color: var(--ink-light); }
+
+    /* ── Newsletter ── */
+    .newsletter {
+      background: var(--cream-dark);
+      border-radius: var(--radius);
+      padding: 5rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .newsletter::before {
+      content: '🕊️';
+      position: absolute;
+      font-size: 12rem;
+      opacity: 0.04;
+      top: -2rem; right: -2rem;
+    }
+
+    .newsletter h2 { margin-bottom: 1rem; }
+    .newsletter p { color: var(--ink-light); margin-bottom: 2rem; }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0;
+      max-width: 480px;
+      margin: 0 auto;
+      border: 1.5px solid rgba(26,20,16,0.18);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      padding: 0.9rem 1.2rem;
+      border: none;
+      background: white;
+      font-size: 0.88rem;
+      outline: none;
+      font-family: var(--font-body);
+      color: var(--ink);
+    }
+
+    .newsletter-form button {
+      background: var(--rust);
+      color: white;
+      padding: 0.9rem 1.5rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .newsletter-form button:hover { background: var(--ink); }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero__left { padding: calc(var(--nav-h) + 2rem) 1.5rem 2rem; }
+      .hero__right { min-height: 50vw; }
+      .hero__artwork { font-size: 8rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .categories-grid { grid-template-columns: repeat(3, 1fr); }
+      .process-grid { grid-template-columns: repeat(2, 1fr); }
+      .process-grid::before { display: none; }
+      .testimonials-track { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .categories-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Page Loader -->
+<div class="page-loader">
+  <div class="fold-anim">✦</div>
+  <div class="page-loader__text">Folding your experience…</div>
+</div>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <div class="nav__logo-mark">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <polygon points="14,2 26,22 2,22" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <polygon points="14,8 22,22 6,22" fill="var(--rust)" opacity="0.3"/>
+        </svg>
+      </div>
+      OrigamiaaByNavish
+    </a>
+
+    <div class="nav__links">
+      <a href="index.html" class="active">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+
+    <div class="nav__actions">
+      <a href="shop.html" class="nav__icon-btn" title="Search">🔍</a>
+      <a href="profile.html" class="nav__icon-btn" title="Profile">👤</a>
+      <a href="cart.html" class="nav__icon-btn" title="Cart" style="position:relative">
+        🛒
+        <span class="nav__cart-count" style="display:none">0</span>
+      </a>
+      <button class="nav__hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="nav__mobile">
+  <a href="index.html">Home</a>
+  <a href="shop.html">Shop</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="about.html">About</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact</a>
+  <a href="profile.html">Profile</a>
+  <a href="cart.html">Cart 🛒</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero__left">
+    <div class="hero__tagline">Handcrafted paper art · Mumbai, India</div>
+    <h1 class="hero__title">
+      Every fold<br>tells a <em>story</em>
+    </h1>
+    <p class="hero__sub">
+      Each origami piece is handcrafted with intention — a meditative art form transformed into living sculpture. From mythical dragons to gentle cranes, every creation is one-of-a-kind.
+    </p>
+    <div class="hero__cta">
+      <a href="shop.html" class="btn btn--primary">Explore Shop →</a>
+      <a href="gallery.html" class="btn btn--ghost">View Gallery ↗</a>
+    </div>
+  </div>
+
+  <div class="hero__right">
+    <div class="hero__right-deco">🕊️</div>
+    <div class="hero__right-deco">🌸</div>
+    <div class="hero__right-deco">🐉</div>
+    <div class="hero__right-deco">⭐</div>
+    <div class="hero__artwork">🦚</div>
+  </div>
+
+  <div class="hero__scroll">
+    <span>Scroll</span>
+    <span>↓</span>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<section class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="reveal">
+        <span class="stat__number">200+</span>
+        <div class="stat__label">Pieces Sold</div>
+      </div>
+      <div class="reveal" data-delay="100">
+        <span class="stat__number">50+</span>
+        <div class="stat__label">Unique Designs</div>
+      </div>
+      <div class="reveal" data-delay="200">
+        <span class="stat__number">4.9★</span>
+        <div class="stat__label">Average Rating</div>
+      </div>
+      <div class="reveal" data-delay="300">
+        <span class="stat__number">100%</span>
+        <div class="stat__label">Handcrafted</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="eyebrow">Browse by category</p>
+      <h2>What do you love?</h2>
+      <p>From barnyard companions to mythical beasts — every creature folded with care.</p>
+    </div>
+
+    <div class="categories-grid">
+      <a href="shop.html?category=domestic" class="cat-card reveal" data-delay="0">
+        <span class="cat-card__icon">🐱</span>
+        <div class="cat-card__name">Domestic</div>
+        <div class="cat-card__count">4 pieces</div>
+      </a>
+      <a href="shop.html?category=wild" class="cat-card reveal" data-delay="80">
+        <span class="cat-card__icon">🐯</span>
+        <div class="cat-card__name">Wild Animals</div>
+        <div class="cat-card__count">5 pieces</div>
+      </a>
+      <a href="shop.html?category=mythical" class="cat-card reveal" data-delay="160">
+        <span class="cat-card__icon">🐉</span>
+        <div class="cat-card__name">Mythical</div>
+        <div class="cat-card__count">4 pieces</div>
+      </a>
+      <a href="shop.html?category=fish" class="cat-card reveal" data-delay="240">
+        <span class="cat-card__icon">🐟</span>
+        <div class="cat-card__name">Fish & Ocean</div>
+        <div class="cat-card__count">4 pieces</div>
+      </a>
+      <a href="shop.html?category=birds" class="cat-card reveal" data-delay="320">
+        <span class="cat-card__icon">🕊️</span>
+        <div class="cat-card__name">Birds</div>
+        <div class="cat-card__count">3 pieces</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section" style="background:var(--cream-dark)">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="eyebrow">Handpicked for you</p>
+      <h2>Bestsellers</h2>
+      <p>Our most-loved pieces — each one folded to perfection.</p>
+    </div>
+
+    <div class="grid-4" id="featured-products"></div>
+
+    <div style="text-align:center;margin-top:3rem" class="reveal">
+      <a href="shop.html" class="btn btn--outline">See All Pieces →</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="eyebrow">The process</p>
+      <h2>From paper to poetry</h2>
+    </div>
+
+    <div class="process-grid">
+      <div class="process-step reveal" data-delay="0">
+        <div class="process-step__num">01</div>
+        <div class="process-step__icon">🌿</div>
+        <h4>Sourcing</h4>
+        <p>Only the finest washi, mulberry and foil papers — sourced from traditional Japanese mills.</p>
+      </div>
+      <div class="process-step reveal" data-delay="100">
+        <div class="process-step__num">02</div>
+        <div class="process-step__icon">✋</div>
+        <h4>Folding</h4>
+        <p>Each piece folded entirely by hand, with hundreds of precise folds and zero shortcuts.</p>
+      </div>
+      <div class="process-step reveal" data-delay="200">
+        <div class="process-step__num">03</div>
+        <div class="process-step__icon">🔍</div>
+        <h4>Finishing</h4>
+        <p>Details refined, edges crisp. Every piece inspected before it leaves the studio.</p>
+      </div>
+      <div class="process-step reveal" data-delay="300">
+        <div class="process-step__num">04</div>
+        <div class="process-step__icon">📦</div>
+        <h4>Gift Wrapped</h4>
+        <p>Packed in kraft paper with a wax seal, a handwritten note, and care instructions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" style="background:var(--cream-dark)">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="eyebrow">Reviews</p>
+      <h2>What people say</h2>
+    </div>
+
+    <div class="testimonials-track">
+      <div class="testimonial-card reveal">
+        <div class="testimonial-card__stars">★★★★★</div>
+        <div class="testimonial-card__text">"The dragon is an absolute masterpiece. My whole office gathers around it. Worth every rupee — and then some."</div>
+        <div class="testimonial-card__author">
+          <div class="testimonial-card__avatar">🧑</div>
+          <div>
+            <div class="testimonial-card__name">Rohan Mehta</div>
+            <div class="testimonial-card__loc">Mumbai · Dragon of Fortune</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal" data-delay="100">
+        <div class="testimonial-card__stars">★★★★★</div>
+        <div class="testimonial-card__text">"I ordered the Safari Quintet as a gift. The packaging was gorgeous, the pieces flawless. My friend literally cried happy tears."</div>
+        <div class="testimonial-card__author">
+          <div class="testimonial-card__avatar">👩</div>
+          <div>
+            <div class="testimonial-card__name">Priya Sharma</div>
+            <div class="testimonial-card__loc">Delhi · Safari Quintet</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal" data-delay="200">
+        <div class="testimonial-card__stars">★★★★☆</div>
+        <div class="testimonial-card__text">"The Koi fish sits on my study desk. Every fold is deliberate, every crease intentional. Art I look forward to every morning."</div>
+        <div class="testimonial-card__author">
+          <div class="testimonial-card__avatar">🧓</div>
+          <div>
+            <div class="testimonial-card__name">Anil Nair</div>
+            <div class="testimonial-card__loc">Pune · Koi Prosperity Fish</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="section">
+  <div class="container">
+    <div class="newsletter reveal">
+      <p class="eyebrow">Stay connected</p>
+      <h2>New folds, first</h2>
+      <p>Get early access to new designs, care tips, and origami stories. No spam — promise.</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="your@email.com" id="newsletter-email" />
+        <button onclick="subscribeNewsletter()">Subscribe</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand-name">OrigamiaaByNavish</div>
+        <div class="footer__tagline">
+          Every piece of paper holds the possibility of a thousand shapes. We fold that possibility into art.
+        </div>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link">📷</a>
+          <a href="#" class="footer__social-link">🐦</a>
+          <a href="#" class="footer__social-link">▶️</a>
+          <a href="#" class="footer__social-link">📌</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer__col-title">Shop</div>
+        <div class="footer__links">
+          <a href="shop.html">All Pieces</a>
+          <a href="shop.html?category=domestic">Domestic Animals</a>
+          <a href="shop.html?category=wild">Wild Animals</a>
+          <a href="shop.html?category=mythical">Mythical</a>
+          <a href="shop.html?category=fish">Fish & Ocean</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer__col-title">Info</div>
+        <div class="footer__links">
+          <a href="about.html">About</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer__col-title">Help</div>
+        <div class="footer__links">
+          <a href="#">Shipping Policy</a>
+          <a href="#">Return Policy</a>
+          <a href="#">Care Guide</a>
+          <a href="#">FAQ</a>
+          <a href="history.html">Order History</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© 2025 OrigamiaaByNavish. All rights reserved.</span>
+      <span>Made with ♡ and washi paper · <a href="#">Privacy</a> · <a href="#">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/shop.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const featured = [
+    { id: 10, name: 'Dragon of Fortune',   category: 'mythical', price: 899,  originalPrice: 1099, rating: 5.0, reviews: 88, badge: 'bestseller', emoji: '🐉', type: 'single' },
+    { id: 7,  name: 'Safari Quintet',      category: 'wild',     price: 1899, originalPrice: 2299, rating: 5.0, reviews: 23, badge: 'bestseller', emoji: '🦁', type: 'collection' },
+    { id: 18, name: 'Senbazuru Crane',     category: 'birds',    price: 249,  originalPrice: null, rating: 4.9, reviews: 104,badge: 'bestseller', emoji: '🕊️', type: 'single' },
+    { id: 14, name: 'Koi Prosperity Fish', category: 'fish',     price: 429,  originalPrice: null, rating: 4.8, reviews: 55, badge: 'popular',    emoji: '🐟', type: 'single' },
+  ];
+
+  const grid = document.getElementById('featured-products');
+  if (!grid) return;
+
+  grid.innerHTML = featured.map((p, i) => `
+    <div class="product-card reveal" data-delay="${i * 80}">
+      <div class="product-card__image">
+        <a href="product.html?id=${p.id}">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:6rem;background:var(--cream-dark)">${p.emoji}</div>
+        </a>
+        <div class="product-card__badge">${p.badge}</div>
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__category">${p.category} · ${p.type}</div>
+        <div class="product-card__name">${p.name}</div>
+        <div class="product-card__price">
+          <span class="product-card__price-main">₹${p.price.toLocaleString()}</span>
+          ${p.originalPrice ? `<span class="product-card__price-orig">₹${p.originalPrice.toLocaleString()}</span>` : ''}
+        </div>
+        <div class="product-card__rating">
+          <span style="color:var(--gold)">★★★★★</span>
+          <span>(${p.reviews})</span>
+        </div>
+      </div>
+      <div class="product-card__footer">
+        <button class="product-card__add-btn" onclick="window.OrigamiSite.addToCart(${JSON.stringify(p).replace(/"/g, '&quot;')})">+ Add to Cart</button>
+      </div>
+    </div>`).join('');
+
+  initReveal();
+});
+
+function subscribeNewsletter() {
+  const email = document.getElementById('newsletter-email').value;
+  if (!email || !email.includes('@')) {
+    window.OrigamiSite.showToast('Please enter a valid email', 'error');
+    return;
+  }
+  window.OrigamiSite.showToast('Subscribed! Welcome to the fold ✦', 'success');
+  document.getElementById('newsletter-email').value = '';
+}
+
+function initReveal() {
+  const els = document.querySelectorAll('.reveal:not(.visible), .reveal-left:not(.visible), .reveal-right:not(.visible)');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const delay = e.target.dataset.delay || 0;
+        setTimeout(() => e.target.classList.add('visible'), delay);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => observer.observe(el));
+}
+</script>
+</body>
+</html>

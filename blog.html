@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — OrigamiaaByNavish</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .blog-page { padding-bottom: 6rem; }
+
+    /* ── Filter Pills ── */
+    .blog-filters {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
+    }
+
+    .blog-filter {
+      padding: 0.5rem 1.3rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1.5px solid rgba(26,20,16,0.18);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      background: white;
+      color: var(--ink-light);
+      font-family: var(--font-body);
+    }
+
+    .blog-filter.active, .blog-filter:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: white;
+    }
+
+    /* ── Featured Post ── */
+    .blog-featured {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      background: var(--cream);
+      border: 1px solid rgba(26,20,16,0.07);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 3rem;
+    }
+
+    .blog-featured__image {
+      aspect-ratio: 4/3;
+      background: var(--cream-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9rem;
+    }
+
+    .blog-featured__body {
+      padding: 2.5rem 2.5rem 2.5rem 0;
+    }
+
+    .blog-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rust);
+      background: rgba(184,92,56,0.1);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+    }
+
+    .blog-featured__title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+
+    .blog-featured__excerpt {
+      color: var(--ink-light);
+      font-size: 0.92rem;
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.75rem;
+      color: var(--ink-light);
+      margin-bottom: 1.5rem;
+    }
+
+    .blog-meta__dot { opacity: 0.3; }
+
+    /* ── Grid ── */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.8rem;
+    }
+
+    .blog-card {
+      background: var(--cream);
+      border: 1px solid rgba(26,20,16,0.07);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px var(--shadow);
+    }
+
+    .blog-card__image {
+      aspect-ratio: 16/10;
+      background: var(--cream-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+    }
+
+    .blog-card__body { padding: 1.5rem; }
+    .blog-card__title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      line-height: 1.3;
+      margin-bottom: 0.6rem;
+    }
+
+    .blog-card__excerpt {
+      font-size: 0.82rem;
+      color: var(--ink-light);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .blog-card__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--ink-light);
+    }
+
+    .blog-card__read {
+      color: var(--rust);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Newsletter inline ── */
+    .blog-newsletter {
+      grid-column: 2;
+      background: var(--ink);
+      color: var(--cream);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .blog-newsletter h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+      color: var(--gold);
+    }
+
+    .blog-newsletter p {
+      font-size: 0.82rem;
+      color: rgba(245,240,232,0.6);
+      margin-bottom: 1.2rem;
+      line-height: 1.7;
+    }
+
+    .blog-newsletter input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(245,240,232,0.08);
+      border: 1px solid rgba(245,240,232,0.2);
+      border-radius: var(--radius);
+      color: white;
+      font-size: 0.82rem;
+      margin-bottom: 0.8rem;
+      outline: none;
+      font-family: var(--font-body);
+    }
+
+    .blog-newsletter input::placeholder { color: rgba(245,240,232,0.35); }
+    .blog-newsletter input:focus { border-color: var(--gold); }
+
+    /* ── Load More ── */
+    .blog-load-more {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 900px) {
+      .blog-featured { grid-template-columns: 1fr; }
+      .blog-featured__image { min-height: 220px; }
+      .blog-featured__body { padding: 2rem; }
+      .blog-grid { grid-template-columns: 1fr 1fr; }
+      .blog-newsletter { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 580px) {
+      .blog-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-loader">
+  <div class="fold-anim">✦</div>
+  <div class="page-loader__text">Opening the journal…</div>
+</div>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <div class="nav__logo-mark">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <polygon points="14,2 26,22 2,22" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <polygon points="14,8 22,22 6,22" fill="var(--rust)" opacity="0.3"/>
+        </svg>
+      </div>
+      OrigamiaaByNavish
+    </a>
+    <div class="nav__links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="about.html">About</a>
+      <a href="blog.html" class="active">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav__actions">
+      <a href="profile.html" class="nav__icon-btn">👤</a>
+      <a href="cart.html" class="nav__icon-btn" style="position:relative">
+        🛒<span class="nav__cart-count" style="display:none">0</span>
+      </a>
+      <button class="nav__hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="nav__mobile">
+  <a href="index.html">Home</a>
+  <a href="shop.html">Shop</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="about.html">About</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact</a>
+  <a href="cart.html">Cart 🛒</a>
+</div>
+
+<div class="page-hero">
+  <p class="eyebrow">The Journal</p>
+  <h1>Blog</h1>
+  <p>Folding guides, paper stories, behind-the-scenes and the occasional life update — straight from the studio.</p>
+</div>
+
+<div class="blog-page">
+  <div class="container">
+
+    <!-- FILTERS -->
+    <div class="blog-filters">
+      <button class="blog-filter active">All Posts</button>
+      <button class="blog-filter">Folding Guides</button>
+      <button class="blog-filter">Behind the Scenes</button>
+      <button class="blog-filter">Paper & Materials</button>
+      <button class="blog-filter">Gifting Ideas</button>
+      <button class="blog-filter">Stories</button>
+    </div>
+
+    <!-- FEATURED POST -->
+    <div class="blog-featured reveal">
+      <div class="blog-featured__image">🐉</div>
+      <div class="blog-featured__body">
+        <div class="blog-tag">Featured · Folding Guide</div>
+        <div class="blog-featured__title">How I fold the Dragon of Fortune — step by step</div>
+        <div class="blog-meta">
+          <span>Navish</span>
+          <span class="blog-meta__dot">·</span>
+          <span>May 10, 2025</span>
+          <span class="blog-meta__dot">·</span>
+          <span>8 min read</span>
+        </div>
+        <div class="blog-featured__excerpt">
+          The Dragon of Fortune is my most complex design — 300+ folds, hand-painted gold foil paper, and about 4 hours of focused work per piece. In this post I walk through the key stages, common mistakes, and why I think this dragon is worth every crease.
+        </div>
+        <a href="#" class="btn btn--rust" onclick="window.OrigamiSite.showToast('Full post coming soon! ✦','info');return false">Read Article →</a>
+      </div>
+    </div>
+
+    <!-- BLOG GRID -->
+    <div class="blog-grid">
+
+      <div class="blog-card reveal" data-delay="0">
+        <div class="blog-card__image">🕊️</div>
+        <div class="blog-card__body">
+          <div class="blog-tag">Folding Guide</div>
+          <div class="blog-card__title">The 1000 cranes myth — and how to actually fold one</div>
+          <div class="blog-card__excerpt">The Senbazuru legend says fold 1000 cranes and your wish comes true. Here's the proper technique to fold a clean, symmetrical crane every time.</div>
+          <div class="blog-card__footer">
+            <span>April 22, 2025 · 5 min</span>
+            <span class="blog-card__read">Read →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Newsletter inline card -->
+      <div class="blog-newsletter reveal" data-delay="80">
+        <div class="blog-tag" style="background:rgba(201,168,76,0.15);color:var(--gold)">Newsletter</div>
+        <h3>New folds, first</h3>
+        <p>Get early access to new designs, folding guides, and studio stories. No spam — promise.</p>
+        <input type="email" id="blog-email" placeholder="your@email.com" />
+        <button class="btn btn--rust" style="width:100%;justify-content:center" onclick="blogSubscribe()">Subscribe ✦</button>
+      </div>
+
+      <div class="blog-card reveal" data-delay="160">
+        <div class="blog-card__image">🌿</div>
+        <div class="blog-card__body">
+          <div class="blog-tag">Paper & Materials</div>
+          <div class="blog-card__title">Washi vs mulberry paper — which is better for origami?</div>
+          <div class="blog-card__excerpt">Not all paper is equal. After years of experimenting, here's what I've learned about texture, weight, grain direction, and which papers I swear by.</div>
+          <div class="blog-card__footer">
+            <span>March 15, 2025 · 6 min</span>
+            <span class="blog-card__read">Read →</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-card reveal" data-delay="0">
+        <div class="blog-card__image">🎁</div>
+        <div class="blog-card__body">
+          <div class="blog-tag">Gifting Ideas</div>
+          <div class="blog-card__title">The best origami gifts for every occasion (a guide)</div>
+          <div class="blog-card__excerpt">Birthday, wedding, housewarming, or just because — here's how I recommend matching a piece to a person and occasion. Includes budget options too.</div>
+          <div class="blog-card__footer">
+            <span>February 28, 2025 · 4 min</span>
+            <span class="blog-card__read">Read →</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-card reveal" data-delay="80">
+        <div class="blog-card__image">🏠</div>
+        <div class="blog-card__body">
+          <div class="blog-tag">Behind the Scenes</div>
+          <div class="blog-card__title">A peek inside the studio — my workspace setup</div>
+          <div class="blog-card__excerpt">People always ask what my studio looks like. Spoiler: it's a corner of my Mumbai apartment with very good lighting and a lot of paper scraps.</div>
+          <div class="blog-card__footer">
+            <span>January 5, 2025 · 3 min</span>
+            <span class="blog-card__read">Read →</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-card reveal" data-delay="160">
+        <div class="blog-card__image">🐼</div>
+        <div class="blog-card__body">
+          <div class="blog-tag">Stories</div>
+          <div class="blog-card__title">Why I made a panda for a stranger in Pune</div>
+          <div class="blog-card__excerpt">A DM came in at 11pm. "Can you make a panda? It's for my daughter's birthday, she just came out of hospital." This is that story.</div>
+          <div class="blog-card__footer">
+            <span>December 18, 2024 · 4 min</span>
+            <span class="blog-card__read">Read →</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- LOAD MORE -->
+    <div class="blog-load-more reveal">
+      <button class="btn btn--outline" onclick="window.OrigamiSite.showToast('More posts coming soon ✦', 'info')">
+        Load More Articles
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand-name">OrigamiaaByNavish</div>
+        <div class="footer__tagline">Every fold tells a story.</div>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link">📷</a>
+          <a href="#" class="footer__social-link">🐦</a>
+          <a href="#" class="footer__social-link">▶️</a>
+        </div>
+      </div>
+      <div><div class="footer__col-title">Shop</div><div class="footer__links"><a href="shop.html">All Pieces</a><a href="shop.html?category=mythical">Mythical</a></div></div>
+      <div><div class="footer__col-title">Info</div><div class="footer__links"><a href="about.html">About</a><a href="gallery.html">Gallery</a><a href="contact.html">Contact</a></div></div>
+      <div><div class="footer__col-title">Help</div><div class="footer__links"><a href="#">Shipping</a><a href="#">Returns</a></div></div>
+    </div>
+    <div class="footer__bottom"><span>© 2025 OrigamiaaByNavish</span></div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  // Filter pill toggle (visual only for now)
+  document.querySelectorAll('.blog-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.blog-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  function blogSubscribe() {
+    const email = document.getElementById('blog-email').value;
+    if (!email || !email.includes('@')) {
+      window.OrigamiSite.showToast('Please enter a valid email', 'error');
+      return;
+    }
+    window.OrigamiSite.showToast('Subscribed! Welcome to the fold ✦', 'success');
+    document.getElementById('blog-email').value = '';
+  }
+</script>
+</body>
+</html>

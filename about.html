@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Navish — OrigamiaaByNavish</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .about-page { padding-bottom: 6rem; }
+
+    /* ── Intro Split ── */
+    .about-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      padding: 5rem 0;
+    }
+
+    .about-portrait {
+      position: relative;
+    }
+
+    .about-portrait__frame {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--cream-dark);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-portrait__frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 70%, rgba(184,92,56,0.12), transparent 60%);
+    }
+
+    .about-portrait__badge {
+      position: absolute;
+      bottom: -1rem;
+      right: -1rem;
+      background: var(--ink);
+      color: var(--cream);
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius);
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      box-shadow: 0 8px 24px var(--shadow-deep);
+    }
+
+    .about-portrait__badge strong {
+      display: block;
+      font-size: 1.4rem;
+      color: var(--gold);
+      font-weight: 300;
+    }
+
+    .about-portrait__deco {
+      position: absolute;
+      top: -1rem;
+      left: -1rem;
+      width: 80px; height: 80px;
+      border: 1.5px solid var(--rust);
+      border-radius: var(--radius);
+      opacity: 0.3;
+    }
+
+    .about-text .eyebrow { margin-bottom: 1rem; }
+    .about-text h1 { margin-bottom: 1.5rem; }
+
+    .about-text p {
+      color: var(--ink-light);
+      line-height: 1.9;
+      margin-bottom: 1.2rem;
+      font-size: 0.98rem;
+    }
+
+    .about-text p em {
+      color: var(--rust);
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    .about-signature {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-style: italic;
+      color: var(--rust);
+      margin-top: 2rem;
+    }
+
+    /* ── Values ── */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .value-card {
+      background: var(--cream);
+      border: 1px solid rgba(26,20,16,0.07);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .value-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px var(--shadow);
+    }
+
+    .value-card__icon {
+      font-size: 3rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .value-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .value-card p {
+      font-size: 0.88rem;
+      color: var(--ink-light);
+      line-height: 1.8;
+    }
+
+    /* ── Journey Timeline ── */
+    .timeline {
+      position: relative;
+      padding: 2rem 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--rust), transparent);
+      opacity: 0.3;
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 1fr 60px 1fr;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content { text-align: right; }
+    .timeline-item:nth-child(odd) .timeline-blank { display: block; }
+    .timeline-item:nth-child(even) .timeline-content-right { text-align: left; }
+
+    .timeline-dot {
+      width: 48px; height: 48px;
+      background: var(--paper);
+      border: 2px solid var(--rust);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-content, .timeline-content-right {
+      padding: 1.5rem;
+      background: var(--cream);
+      border: 1px solid rgba(26,20,16,0.07);
+      border-radius: var(--radius);
+    }
+
+    .timeline-year {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-content h4, .timeline-content-right h4 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-content p, .timeline-content-right p {
+      font-size: 0.85rem;
+      color: var(--ink-light);
+      line-height: 1.7;
+    }
+
+    /* ── Fun Facts ── */
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      text-align: center;
+    }
+
+    .fact-card {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 2.5rem 1.5rem;
+      border-radius: var(--radius);
+    }
+
+    .fact-card__number {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .fact-card__label {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    /* ── CTA Banner ── */
+    .about-cta {
+      background: var(--cream-dark);
+      border-radius: var(--radius);
+      padding: 5rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-cta::before {
+      content: '🐉';
+      position: absolute;
+      font-size: 14rem;
+      opacity: 0.04;
+      right: -2rem;
+      bottom: -3rem;
+    }
+
+    .about-cta h2 { margin-bottom: 1rem; }
+    .about-cta p { color: var(--ink-light); margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+    @media (max-width: 900px) {
+      .about-intro { grid-template-columns: 1fr; gap: 3rem; }
+      .about-portrait__frame { max-width: 400px; margin: 0 auto; }
+      .values-grid { grid-template-columns: 1fr; }
+      .facts-grid { grid-template-columns: repeat(2, 1fr); }
+      .timeline::before { left: 28px; }
+      .timeline-item { grid-template-columns: 56px 1fr; }
+      .timeline-item:nth-child(odd) .timeline-content { text-align: left; }
+      .timeline-blank { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-loader">
+  <div class="fold-anim">✦</div>
+  <div class="page-loader__text">Unfolding my story…</div>
+</div>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <div class="nav__logo-mark">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <polygon points="14,2 26,22 2,22" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <polygon points="14,8 22,22 6,22" fill="var(--rust)" opacity="0.3"/>
+        </svg>
+      </div>
+      OrigamiaaByNavish
+    </a>
+    <div class="nav__links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="about.html" class="active">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav__actions">
+      <a href="profile.html" class="nav__icon-btn">👤</a>
+      <a href="cart.html" class="nav__icon-btn" style="position:relative">
+        🛒<span class="nav__cart-count" style="display:none">0</span>
+      </a>
+      <button class="nav__hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="nav__mobile">
+  <a href="index.html">Home</a>
+  <a href="shop.html">Shop</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="about.html">About</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact</a>
+  <a href="cart.html">Cart 🛒</a>
+</div>
+
+<!-- Page Hero -->
+<div class="page-hero">
+  <p class="eyebrow">The Artist</p>
+  <h1>About Navish</h1>
+  <p>A Mumbai-based origami artist turning simple squares of paper into extraordinary living sculptures — one fold at a time.</p>
+</div>
+
+<div class="about-page">
+  <div class="container">
+
+    <!-- INTRO -->
+    <div class="about-intro">
+      <div class="about-portrait reveal-left">
+        <div class="about-portrait__deco"></div>
+        <div class="about-portrait__frame">🧑‍🎨</div>
+        <div class="about-portrait__badge">
+          <strong>200+</strong>
+          pieces folded & sold
+        </div>
+      </div>
+
+      <div class="about-text reveal-right">
+        <p class="eyebrow">Hello, I'm Navish</p>
+        <h1>Paper is my<br>favourite canvas</h1>
+
+        <p>
+          It started with a single crane. I was around 12 years old, sitting in my grandfather's house in Mumbai, when he showed me how to fold a paper bird. That bird never flew — but something in me did.
+        </p>
+        <p>
+          Over the years, origami grew from a quiet hobby into a <em>full creative practice</em>. What began with cranes became dragons, phoenixes, entire safari collections. Each piece taught me something new about patience, geometry, and the strange alchemy of turning a flat square into a living form.
+        </p>
+        <p>
+          I started selling my work to friends, then strangers, and eventually launched OrigamiaaByNavish — a small studio right here in Mumbai where <em>every single piece is handfolded by me</em>. No machines. No shortcuts. Just paper, fingers, and a lot of love.
+        </p>
+        <p>
+          If you own one of my pieces, thank you. It means the world. ✦
+        </p>
+        <div class="about-signature">— Navish</div>
+      </div>
+    </div>
+
+    <!-- VALUES -->
+    <section class="section" style="padding-top:0">
+      <div class="section-header reveal">
+        <p class="eyebrow">What I believe in</p>
+        <h2>The philosophy of folding</h2>
+      </div>
+
+      <div class="values-grid">
+        <div class="value-card reveal" data-delay="0">
+          <div class="value-card__icon">🌿</div>
+          <h3>Slow craft</h3>
+          <p>In a world of fast everything, I believe in slow, intentional making. Each fold is deliberate. Each crease is a decision. There is no rush in this studio.</p>
+        </div>
+        <div class="value-card reveal" data-delay="100">
+          <div class="value-card__icon">✋</div>
+          <h3>Truly handmade</h3>
+          <p>Every piece you see is folded by my hands — not printed, not mass-produced. If it says OrigamiaaByNavish, it was made by Navish. That's a promise.</p>
+        </div>
+        <div class="value-card reveal" data-delay="200">
+          <div class="value-card__icon">🎁</div>
+          <h3>Gifting with intention</h3>
+          <p>Origami has been a gift between people for centuries. When you give one of my pieces, you're giving time, skill, and a little piece of someone's soul.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="section" style="background:var(--cream-dark);border-radius:var(--radius);padding:4rem 3rem">
+      <div class="section-header reveal">
+        <p class="eyebrow">The journey</p>
+        <h2>How it all unfolded</h2>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <div class="timeline-content">
+            <div class="timeline-year">2015</div>
+            <h4>The First Crane 🕊️</h4>
+            <p>Learned origami from my grandfather. Folded my first crane — lopsided, but magical.</p>
+          </div>
+          <div class="timeline-dot">🕊️</div>
+          <div class="timeline-blank"></div>
+        </div>
+
+        <div class="timeline-item reveal" data-delay="100">
+          <div class="timeline-blank"></div>
+          <div class="timeline-dot">📚</div>
+          <div class="timeline-content-right">
+            <div class="timeline-year">2017</div>
+            <h4>Deep Dive 📚</h4>
+            <p>Discovered complex origami — Robert Lang's tesselations, Yoshizawa's wetfolding. Spent hundreds of hours practising advanced forms.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal" data-delay="200">
+          <div class="timeline-content">
+            <div class="timeline-year">2019</div>
+            <h4>First Sale 🎉</h4>
+            <p>A friend bought my dragon as a wedding gift for someone. That was the moment I realised this could be more than a hobby.</p>
+          </div>
+          <div class="timeline-dot">🎉</div>
+          <div class="timeline-blank"></div>
+        </div>
+
+        <div class="timeline-item reveal" data-delay="300">
+          <div class="timeline-blank"></div>
+          <div class="timeline-dot">🚀</div>
+          <div class="timeline-content-right">
+            <div class="timeline-year">2023</div>
+            <h4>OrigamiaaByNavish launches 🚀</h4>
+            <p>Built the studio, created the brand, set up the shop. 50 designs, 200+ pieces sold. Still counting.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FUN FACTS -->
+    <section class="section" style="padding-bottom:0">
+      <div class="section-header reveal">
+        <p class="eyebrow">By the numbers</p>
+        <h2>A few facts</h2>
+      </div>
+      <div class="facts-grid">
+        <div class="fact-card reveal" data-delay="0">
+          <span class="fact-card__number">200+</span>
+          <div class="fact-card__label">Pieces sold</div>
+        </div>
+        <div class="fact-card reveal" data-delay="80">
+          <span class="fact-card__number">50+</span>
+          <div class="fact-card__label">Unique designs</div>
+        </div>
+        <div class="fact-card reveal" data-delay="160">
+          <span class="fact-card__number">8yrs</span>
+          <div class="fact-card__label">Of folding</div>
+        </div>
+        <div class="fact-card reveal" data-delay="240">
+          <span class="fact-card__number">0</span>
+          <div class="fact-card__label">Machines used</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="about-cta reveal">
+        <p class="eyebrow">Ready to own a piece?</p>
+        <h2>Let's find your fold</h2>
+        <p>Browse the full collection or reach out if you'd like something custom. I'd love to make something just for you.</p>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+          <a href="shop.html" class="btn btn--primary">Browse Shop →</a>
+          <a href="contact.html" class="btn btn--outline">Get in Touch ↗</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand-name">OrigamiaaByNavish</div>
+        <div class="footer__tagline">Every piece of paper holds the possibility of a thousand shapes.</div>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link">📷</a>
+          <a href="#" class="footer__social-link">🐦</a>
+          <a href="#" class="footer__social-link">▶️</a>
+          <a href="#" class="footer__social-link">📌</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer__col-title">Shop</div>
+        <div class="footer__links">
+          <a href="shop.html">All Pieces</a>
+          <a href="shop.html?category=mythical">Mythical</a>
+          <a href="shop.html?category=birds">Birds</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer__col-title">Info</div>
+        <div class="footer__links">
+          <a href="about.html">About</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer__col-title">Help</div>
+        <div class="footer__links">
+          <a href="#">Shipping</a>
+          <a href="#">Returns</a>
+          <a href="history.html">Orders</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2025 OrigamiaaByNavish. All rights reserved.</span>
+      <span>Made with ♡ in Mumbai</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

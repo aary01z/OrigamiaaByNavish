@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart — OrigamiaaByNavish</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .cart-page {
+      padding: calc(var(--nav-h) + 3rem) 0 6rem;
+    }
+
+    /* ── Layout ── */
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* ── Cart Header ── */
+    .cart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(26,20,16,0.1);
+      margin-bottom: 0.5rem;
+    }
+
+    .cart-header h2 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+    }
+
+    .cart-header__count {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    .cart-clear-btn {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--rust);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .cart-clear-btn:hover { opacity: 0.7; }
+
+    /* ── Cart Item overrides (base in style.css) ── */
+    .cart-item {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1.8rem 0;
+      border-bottom: 1px solid rgba(26,20,16,0.07);
+    }
+
+    .cart-item__image {
+      width: 100px; height: 100px;
+      background: var(--cream-dark);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.2rem;
+      flex-shrink: 0;
+    }
+
+    .cart-item__info { flex: 1; }
+
+    .cart-item__category {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 0.3rem;
+    }
+
+    .cart-item__name {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      margin-bottom: 0.4rem;
+      color: var(--ink);
+    }
+
+    .cart-item__unit-price {
+      font-size: 0.78rem;
+      color: var(--ink-light);
+      margin-bottom: 0.8rem;
+    }
+
+    .cart-item__controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .cart-item__remove {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #bbb;
+      cursor: pointer;
+      transition: color var(--transition);
+    }
+
+    .cart-item__remove:hover { color: var(--rust); }
+
+    .cart-item__subtotal {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--ink);
+      white-space: nowrap;
+      min-width: 80px;
+      text-align: right;
+    }
+
+    /* ── Free shipping progress ── */
+    .shipping-progress {
+      background: var(--cream-dark);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      margin-top: 1rem;
+      font-size: 0.82rem;
+    }
+
+    .shipping-progress__bar-wrap {
+      height: 4px;
+      background: rgba(26,20,16,0.1);
+      border-radius: 2px;
+      margin-top: 0.7rem;
+      overflow: hidden;
+    }
+
+    .shipping-progress__bar {
+      height: 100%;
+      background: var(--sage);
+      border-radius: 2px;
+      transition: width 0.5s ease;
+    }
+
+    /* ── Order Summary overrides ── */
+    .order-summary {
+      background: var(--cream);
+      border: 1px solid rgba(26,20,16,0.07);
+      border-radius: var(--radius);
+      padding: 2rem;
+      position: sticky;
+      top: calc(var(--nav-h) + 1.5rem);
+    }
+
+    .order-summary__title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(26,20,16,0.1);
+    }
+
+    /* ── Coupon ── */
+    .coupon-row {
+      display: flex;
+      gap: 0;
+      border: 1px solid rgba(26,20,16,0.15);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .coupon-row input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: none;
+      outline: none;
+      font-size: 0.82rem;
+      font-family: var(--font-body);
+      background: white;
+      color: var(--ink);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .coupon-row button {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 0.75rem 1rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      white-space: nowrap;
+    }
+
+    .coupon-row button:hover { background: var(--rust); }
+
+    #coupon-msg {
+      font-size: 0.75rem;
+      margin-top: -1rem;
+      margin-bottom: 1.2rem;
+      min-height: 1rem;
+    }
+
+    /* ── Summary rows ── */
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      margin-bottom: 0.8rem;
+      color: var(--ink-light);
+    }
+
+    .summary-row--total {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--ink);
+      padding-top: 1rem;
+      margin-top: 0.5rem;
+      border-top: 1px solid rgba(26,20,16,0.1);
+      font-family: var(--font-display);
+    }
+
+    /* ── Checkout button ── */
+    #checkout-btn {
+      width: 100%;
+      justify-content: center;
+      margin-top: 1.5rem;
+      padding: 1rem 2rem;
+      font-size: 0.82rem;
+    }
+
+    .checkout-trust {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1.2rem;
+      font-size: 0.7rem;
+      color: var(--ink-light);
+    }
+
+    .checkout-trust span { display: flex; align-items: center; gap: 0.3rem; }
+
+    /* ── Empty state ── */
+    #cart-empty {
+      display: none;
+      text-align: center;
+      padding: 5rem 2rem;
+      grid-column: 1 / -1;
+    }
+
+    #cart-empty .empty-state__icon { font-size: 5rem; margin-bottom: 1.5rem; opacity: 0.25; }
+    #cart-empty h2 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 0.8rem; }
+    #cart-empty p { color: var(--ink-light); margin-bottom: 2rem; }
+
+    /* ── Recommendations ── */
+    #recommendations {
+      margin-top: 5rem;
+    }
+
+    /* ── Free ship msg ── */
+    #free-ship-msg {
+      display: none;
+      font-size: 0.75rem;
+      color: var(--sage);
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .cart-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .order-summary {
+        position: static;
+      }
+
+      .cart-item {
+        grid-template-columns: 80px 1fr;
+        gap: 1rem;
+      }
+
+      .cart-item__subtotal {
+        grid-column: 2;
+        text-align: left;
+        font-size: 1rem;
+        margin-top: -0.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .cart-item {
+        grid-template-columns: 70px 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-loader">
+  <div class="fold-anim">✦</div>
+  <div class="page-loader__text">Checking your cart…</div>
+</div>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <div class="nav__logo-mark">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <polygon points="14,2 26,22 2,22" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <polygon points="14,8 22,22 6,22" fill="var(--rust)" opacity="0.3"/>
+        </svg>
+      </div>
+      OrigamiaaByNavish
+    </a>
+    <div class="nav__links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav__actions">
+      <a href="profile.html" class="nav__icon-btn">👤</a>
+      <a href="cart.html" class="nav__icon-btn active" style="position:relative">
+        🛒<span class="nav__cart-count" style="display:none">0</span>
+      </a>
+      <button class="nav__hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="nav__mobile">
+  <a href="index.html">Home</a>
+  <a href="shop.html">Shop</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="about.html">About</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact</a>
+  <a href="profile.html">Profile</a>
+  <a href="cart.html">Cart 🛒</a>
+</div>
+
+<!-- CART PAGE -->
+<div class="cart-page">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb" style="padding-top:0; margin-bottom:2rem">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb__sep">›</span>
+      <a href="shop.html">Shop</a>
+      <span class="breadcrumb__sep">›</span>
+      <span>Cart</span>
+    </div>
+
+    <!-- Empty State (shown when cart is empty) -->
+    <div id="cart-empty">
+      <div class="empty-state__icon">🛒</div>
+      <h2>Your cart is empty</h2>
+      <p>Looks like you haven't added anything yet. Let's change that.</p>
+      <a href="shop.html" class="btn btn--primary">Browse the Collection →</a>
+    </div>
+
+    <!-- Cart Grid (shown when cart has items) -->
+    <div id="cart-full" style="display:none">
+      <div class="cart-layout">
+
+        <!-- LEFT: Items -->
+        <div>
+          <div class="cart-header">
+            <h2>My Cart</h2>
+            <div style="display:flex;align-items:center;gap:1.5rem">
+              <span class="cart-header__count" id="cart-item-count"></span>
+              <span class="cart-clear-btn" onclick="clearCart()">Clear all</span>
+            </div>
+          </div>
+
+          <!-- Items injected here by cart.js -->
+          <div id="cart-items"></div>
+
+          <!-- Free shipping progress bar -->
+          <div class="shipping-progress" id="shipping-progress-box" style="display:none">
+            <div id="free-ship-msg"></div>
+            <div class="shipping-progress__bar-wrap">
+              <div class="shipping-progress__bar" id="shipping-bar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <!-- Continue Shopping -->
+          <div style="margin-top:2rem">
+            <a href="shop.html" class="btn btn--ghost">← Continue Shopping</a>
+          </div>
+        </div>
+
+        <!-- RIGHT: Summary -->
+        <div>
+          <div class="order-summary">
+            <div class="order-summary__title">Order Summary</div>
+
+            <!-- Coupon -->
+            <div class="coupon-row">
+              <input type="text" id="coupon-input" placeholder="Coupon code" maxlength="20" />
+              <button onclick="applyCoupon()">Apply</button>
+            </div>
+            <div id="coupon-msg"></div>
+
+            <!-- Rows -->
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span id="summary-subtotal">₹0</span>
+            </div>
+            <div class="summary-row">
+              <span>Shipping</span>
+              <span id="summary-shipping">₹79</span>
+            </div>
+            <div class="summary-row">
+              <span>Discount</span>
+              <span id="summary-discount">—</span>
+            </div>
+            <div class="summary-row summary-row--total">
+              <span>Total</span>
+              <span id="summary-total">₹0</span>
+            </div>
+
+            <!-- Checkout -->
+            <button class="btn btn--rust" id="checkout-btn">
+              Proceed to Checkout →
+            </button>
+
+            <div class="checkout-trust">
+              <span>🔒 Secure checkout</span>
+              <span>🎁 Gift wrap included</span>
+              <span>🚚 PAN India</span>
+            </div>
+          </div>
+
+          <!-- Coupon hint -->
+          <div style="margin-top:1.2rem;padding:1rem 1.2rem;background:var(--cream-dark);border-radius:var(--radius);font-size:0.75rem;color:var(--ink-light)">
+            <strong style="color:var(--ink);display:block;margin-bottom:0.4rem">Have a coupon?</strong>
+            Try: <code style="background:white;padding:2px 6px;border-radius:2px;font-size:0.72rem">ORIGAMI10</code> · 
+            <code style="background:white;padding:2px 6px;border-radius:2px;font-size:0.72rem">FOLD20</code> · 
+            <code style="background:white;padding:2px 6px;border-radius:2px;font-size:0.72rem">CRANE100</code>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Recommendations (injected by cart.js) -->
+      <div id="recommendations"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand-name">OrigamiaaByNavish</div>
+        <div class="footer__tagline">
+          Every piece of paper holds the possibility of a thousand shapes. We fold that possibility into art.
+        </div>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link">📷</a>
+          <a href="#" class="footer__social-link">🐦</a>
+          <a href="#" class="footer__social-link">▶️</a>
+          <a href="#" class="footer__social-link">📌</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer__col-title">Shop</div>
+        <div class="footer__links">
+          <a href="shop.html">All Pieces</a>
+          <a href="shop.html?category=domestic">Domestic Animals</a>
+          <a href="shop.html?category=wild">Wild Animals</a>
+          <a href="shop.html?category=mythical">Mythical</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer__col-title">Info</div>
+        <div class="footer__links">
+          <a href="about.html">About</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer__col-title">Help</div>
+        <div class="footer__links">
+          <a href="#">Shipping Policy</a>
+          <a href="#">Return Policy</a>
+          <a href="#">Care Guide</a>
+          <a href="#">FAQ</a>
+          <a href="history.html">Order History</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2025 OrigamiaaByNavish. All rights reserved.</span>
+      <span>Made with ♡ and washi paper · <a href="#">Privacy</a> · <a href="#">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/shop.js"></script>
+<script src="js/cart.js"></script>
+<script>
+  // ── Extra UI wired up here (cart.js handles the heavy lifting) ──
+
+  // Show item count in header
+  function updateCartHeader() {
+    const cart = window.OrigamiSite.getCart();
+    const total = cart.reduce((sum, i) => sum + (i.qty || 1), 0);
+    const el = document.getElementById('cart-item-count');
+    if (el) el.textContent = total + (total === 1 ? ' item' : ' items');
+  }
+
+  // Shipping progress bar
+  function updateShippingBar() {
+    const cart = window.OrigamiSite.getCart();
+    const subtotal = cart.reduce((sum, i) => sum + i.price * (i.qty || 1), 0);
+    const threshold = 999;
+    const box = document.getElementById('shipping-progress-box');
+    const bar  = document.getElementById('shipping-bar');
+    if (!box || !bar) return;
+
+    if (cart.length) {
+      box.style.display = 'block';
+      const pct = Math.min(100, Math.round((subtotal / threshold) * 100));
+      bar.style.width = pct + '%';
+    } else {
+      box.style.display = 'none';
+    }
+  }
+
+  // Clear entire cart
+  function clearCart() {
+    if (!confirm('Remove all items from cart?')) return;
+    window.OrigamiSite.saveCart([]);
+    location.reload();
+  }
+
+  // Checkout button → simple redirect (wire to checkout.html when ready)
+  document.getElementById('checkout-btn')?.addEventListener('click', () => {
+    const cart = window.OrigamiSite.getCart();
+    if (!cart.length) {
+      window.OrigamiSite.showToast('Your cart is empty!', 'error');
+      return;
+    }
+    window.OrigamiSite.showToast('Checkout coming soon ✦', 'info');
+    // When checkout.html is ready: window.location.href = 'checkout.html';
+  });
+
+  // Patch renderCart to also update header + bar after each render
+  const _origRender = window.renderCart;
+  document.addEventListener('DOMContentLoaded', () => {
+    // cart.js calls renderCart on DOMContentLoaded — after it runs, patch in extras
+    setTimeout(() => {
+      updateCartHeader();
+      updateShippingBar();
+    }, 50);
+  });
+
+  // MutationObserver so header stays in sync when items are added/removed
+  const cartItemsEl = document.getElementById('cart-items');
+  if (cartItemsEl) {
+    new MutationObserver(() => {
+      updateCartHeader();
+      updateShippingBar();
+    }).observe(cartItemsEl, { childList: true, subtree: true });
+  }
+
+  window.clearCart = clearCart;
+</script>
+</body>
+</html>

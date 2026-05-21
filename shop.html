@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop — OrigamiaaByNavish</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .shop-layout {
+      padding: calc(var(--nav-h) + 3rem) 0 6rem;
+    }
+
+    .shop-inner {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .shop-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .shop-toolbar__left {
+      font-size: 0.88rem;
+      color: var(--ink-light);
+    }
+
+    .shop-toolbar__left strong { color: var(--ink); font-weight: 500; }
+
+    .shop-toolbar__right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .view-btn {
+      width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(26,20,16,0.15);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      background: white;
+      color: var(--ink-light);
+    }
+
+    .view-btn.active, .view-btn:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: white;
+    }
+
+    #product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: white;
+      border: 1px solid rgba(26,20,16,0.15);
+      border-radius: var(--radius);
+      padding: 0 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 0.75rem 0;
+      border: none;
+      outline: none;
+      font-size: 0.88rem;
+      font-family: var(--font-body);
+      background: transparent;
+    }
+
+    .search-bar span { color: var(--ink-light); }
+
+    @media (max-width: 900px) {
+      .shop-inner { grid-template-columns: 1fr; }
+      .filters { position: static; }
+      #product-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 480px) {
+      #product-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-loader">
+  <div class="fold-anim">✦</div>
+  <div class="page-loader__text">Unfolding the collection…</div>
+</div>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <div class="nav__logo-mark">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <polygon points="14,2 26,22 2,22" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <polygon points="14,8 22,22 6,22" fill="var(--rust)" opacity="0.3"/>
+        </svg>
+      </div>
+      OrigamiaaByNavish
+    </a>
+    <div class="nav__links">
+      <a href="index.html">Home</a>
+      <a href="shop.html" class="active">Shop</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav__actions">
+      <a href="profile.html" class="nav__icon-btn">👤</a>
+      <a href="cart.html" class="nav__icon-btn" style="position:relative">
+        🛒<span class="nav__cart-count" style="display:none">0</span>
+      </a>
+      <button class="nav__hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="nav__mobile">
+  <a href="index.html">Home</a>
+  <a href="shop.html">Shop</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="profile.html">Profile</a>
+  <a href="cart.html">Cart 🛒</a>
+</div>
+
+<div class="shop-layout">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb" style="padding-top:0;margin-bottom:2rem">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb__sep">›</span>
+      <span>Shop</span>
+    </div>
+
+    <div class="shop-inner">
+      <!-- FILTERS SIDEBAR -->
+      <aside>
+        <div class="filters">
+          <div class="filters__title">
+            Filters
+            <span class="filters__clear" id="clear-filters">Clear all</span>
+          </div>
+
+          <!-- Search -->
+          <div class="search-bar">
+            <span>🔍</span>
+            <input type="text" id="search-input" placeholder="Search pieces…" />
+          </div>
+
+          <!-- Category -->
+          <div class="filter-group">
+            <div class="filter-group__label">Category</div>
+            <label class="filter-check">
+              <input type="checkbox" data-filter="category" value="domestic"> Domestic Animals
+              <span class="filter-check__count">4</span>
+            </label>
+            <label class="filter-check">
+              <input type="checkbox" data-filter="category" value="wild"> Wild Animals
+              <span class="filter-check__count">5</span>
+            </label>
+            <label class="filter-check">
+              <input type="checkbox" data-filter="category" value="mythical"> Mythical
+              <span class="filter-check__count">4</span>
+            </label>
+            <label class="filter-check">
+              <input type="checkbox" data-filter="category" value="fish"> Fish & Ocean
+              <span class="filter-check__count">4</span>
+            </label>
+            <label class="filter-check">
+              <input type="checkbox" data-filter="category" value="birds"> Birds
+              <span class="filter-check__count">3</span>
+            </label>
+          </div>
+
+          <!-- Type -->
+          <div class="filter-group">
+            <div class="filter-group__label">Type</div>
+            <label class="filter-check">
+              <input type="checkbox" data-filter="type" value="single"> Single Piece
+              <span class="filter-check__count">14</span>
+            </label>
+            <label class="filter-check">
+              <input type="checkbox" data-filter="type" value="collection"> Collection
+              <span class="filter-check__count">6</span>
+            </label>
+          </div>
+
+          <!-- Difficulty -->
+          <div class="filter-group">
+            <div class="filter-group__label">Skill Level</div>
+            <label class="filter-check">
+              <input type="checkbox" data-filter="difficulty" value="beginner"> Beginner
+            </label>
+            <label class="filter-check">
+              <input type="checkbox" data-filter="difficulty" value="intermediate"> Intermediate
+            </label>
+            <label class="filter-check">
+              <input type="checkbox" data-filter="difficulty" value="advanced"> Advanced
+            </label>
+            <label class="filter-check">
+              <input type="checkbox" data-filter="difficulty" value="expert"> Expert
+            </label>
+          </div>
+
+          <!-- Price -->
+          <div class="filter-group">
+            <div class="filter-group__label">Max Price</div>
+            <div class="range-slider">
+              <input type="range" class="range-input" id="price-range"
+                min="0" max="3000" value="3000" step="50">
+            </div>
+            <div class="price-display" id="price-display">₹0 — ₹3,000</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main>
+        <div class="shop-toolbar">
+          <div class="shop-toolbar__left">
+            Showing <strong id="result-count">20</strong> pieces
+          </div>
+          <div class="shop-toolbar__right">
+            <select class="form-control" id="sort-select" style="width:auto;padding:0.5rem 0.8rem;font-size:0.82rem">
+              <option value="popular">Most Popular</option>
+              <option value="newest">Newest</option>
+              <option value="rating">Top Rated</option>
+              <option value="price-asc">Price: Low → High</option>
+              <option value="price-desc">Price: High → Low</option>
+            </select>
+            <button class="view-btn active" data-view="grid" title="Grid view">▦</button>
+            <button class="view-btn" data-view="list" title="List view">☰</button>
+          </div>
+        </div>
+
+        <div id="product-grid"></div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand-name">OrigamiaaByNavish</div>
+        <div class="footer__tagline">Every fold tells a story.</div>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link">📷</a>
+          <a href="#" class="footer__social-link">🐦</a>
+        </div>
+      </div>
+      <div><div class="footer__col-title">Shop</div>
+        <div class="footer__links">
+          <a href="shop.html?category=domestic">Domestic</a>
+          <a href="shop.html?category=wild">Wild</a>
+          <a href="shop.html?category=mythical">Mythical</a>
+          <a href="shop.html?category=fish">Fish</a>
+        </div>
+      </div>
+      <div><div class="footer__col-title">Info</div>
+        <div class="footer__links">
+          <a href="about.html">About</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div><div class="footer__col-title">Help</div>
+        <div class="footer__links">
+          <a href="#">Shipping</a>
+          <a href="#">Returns</a>
+          <a href="history.html">Orders</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2025 OrigamiaaByNavish</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/shop.js"></script>
+</body>
+</html>

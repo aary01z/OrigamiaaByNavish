@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product — OrigamiaaByNavish</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .product-page { padding: calc(var(--nav-h) + 2rem) 0 6rem; }
+
+    .product-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+
+    .product-gallery__main {
+      aspect-ratio: 1;
+      background: var(--cream-dark);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12rem;
+      margin-bottom: 1rem;
+    }
+
+    .product-gallery__thumbs {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .product-gallery__thumb {
+      width: 70px; height: 70px;
+      background: var(--cream-dark);
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .product-gallery__thumb.active {
+      border-color: var(--rust);
+    }
+
+    .product-info__name {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-info__category {
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1rem;
+    }
+
+    .product-info__rating {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.88rem;
+      color: var(--ink-light);
+    }
+
+    .product-info__price-block {
+      padding: 1.5rem 0;
+      border-top: 1px solid rgba(26,20,16,0.08);
+      border-bottom: 1px solid rgba(26,20,16,0.08);
+      margin-bottom: 1.5rem;
+    }
+
+    .product-info__price {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      color: var(--ink);
+    }
+
+    .product-info__price-orig {
+      font-size: 1rem;
+      color: #aaa;
+      text-decoration: line-through;
+      margin-left: 0.8rem;
+    }
+
+    .product-info__saving {
+      font-size: 0.78rem;
+      color: var(--sage);
+      margin-top: 0.3rem;
+      letter-spacing: 0.05em;
+    }
+
+    .product-info__desc {
+      color: var(--ink-light);
+      line-height: 1.9;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+
+    .product-info__meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+      font-size: 0.85rem;
+    }
+
+    .meta-row { display: flex; gap: 0.5rem; }
+    .meta-row strong { color: var(--ink); min-width: 90px; }
+    .meta-row span { color: var(--ink-light); }
+
+    .product-info__actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .product-trust {
+      background: var(--cream-dark);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      text-align: center;
+      font-size: 0.78rem;
+    }
+
+    .trust-item__icon { font-size: 1.4rem; margin-bottom: 0.3rem; }
+    .trust-item__label { font-weight: 500; margin-bottom: 0.2rem; }
+    .trust-item__sub { color: var(--ink-light); font-size: 0.7rem; }
+
+    .reviews-section { margin-top: 5rem; }
+
+    .review-card {
+      background: var(--cream);
+      border: 1px solid rgba(26,20,16,0.07);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .review-card__header { display: flex; justify-content: space-between; margin-bottom: 0.8rem; }
+    .review-card__author { font-weight: 500; font-size: 0.88rem; }
+    .review-card__date { font-size: 0.75rem; color: var(--ink-light); }
+    .review-card__stars { color: var(--gold); margin-bottom: 0.5rem; }
+    .review-card__text { font-size: 0.88rem; color: var(--ink-light); line-height: 1.8; }
+
+    .similar-section { margin-top: 5rem; }
+
+    @media (max-width: 768px) {
+      .product-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      .product-gallery__main { font-size: 8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-loader">
+  <div class="fold-anim">✦</div>
+  <div class="page-loader__text">Unfolding details…</div>
+</div>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <div class="nav__logo-mark">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <polygon points="14,2 26,22 2,22" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <polygon points="14,8 22,22 6,22" fill="var(--rust)" opacity="0.3"/>
+        </svg>
+      </div>
+      OrigamiaaByNavish
+    </a>
+    <div class="nav__links">
+      <a href="index.html">Home</a>
+      <a href="shop.html" class="active">Shop</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav__actions">
+      <a href="profile.html" class="nav__icon-btn">👤</a>
+      <a href="cart.html" class="nav__icon-btn" style="position:relative">
+        🛒<span class="nav__cart-count" style="display:none">0</span>
+      </a>
+      <button class="nav__hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="nav__mobile">
+  <a href="index.html">Home</a>
+  <a href="shop.html">Shop</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="cart.html">Cart 🛒</a>
+</div>
+
+<div class="product-page">
+  <div class="container">
+    <div class="breadcrumb" style="padding-top:0;margin-bottom:1.5rem">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb__sep">›</span>
+      <a href="shop.html">Shop</a>
+      <span class="breadcrumb__sep">›</span>
+      <span id="bc-name">Product</span>
+    </div>
+
+    <div class="product-layout" id="product-layout">
+      <!-- Filled by JS -->
+    </div>
+
+    <!-- Reviews -->
+    <div class="reviews-section">
+      <div class="ornament"><span class="ornament__symbol">✦</span></div>
+      <h3 style="font-family:var(--font-display);margin-bottom:2rem">Customer Reviews</h3>
+      <div id="reviews-list"></div>
+    </div>
+
+    <!-- Similar Products -->
+    <div class="similar-section">
+      <div class="section-header" style="text-align:left;margin-bottom:2rem">
+        <p class="eyebrow">You might also like</p>
+        <h3>Similar pieces</h3>
+      </div>
+      <div class="grid-4" id="similar-grid"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand-name">OrigamiaaByNavish</div>
+        <div class="footer__tagline">Every fold tells a story.</div>
+      </div>
+      <div><div class="footer__col-title">Shop</div>
+        <div class="footer__links"><a href="shop.html">All Pieces</a></div>
+      </div>
+      <div><div class="footer__col-title">Info</div>
+        <div class="footer__links"><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+      </div>
+      <div><div class="footer__col-title">Help</div>
+        <div class="footer__links"><a href="#">Returns</a><a href="cart.html">Cart</a></div>
+      </div>
+    </div>
+    <div class="footer__bottom"><span>© 2025 OrigamiaaByNavish</span></div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/shop.js"></script>
+<script>
+  const REVIEWS = [
+    { author: 'Kavya R.', date: 'March 2025', rating: 5, text: 'Absolutely stunning. The detail is unbelievable for something made from paper. I keep staring at it.' },
+    { author: 'Ankit S.', date: 'February 2025', rating: 5, text: 'Gifted this to my mother. She was speechless. The packaging alone is gift-worthy.' },
+    { author: 'Neha M.', date: 'January 2025', rating: 4, text: 'Beautiful work. Shipping was quick and it arrived perfectly protected. Highly recommend.' },
+  ];
+
+  function stars(n) { return '★'.repeat(n) + '☆'.repeat(5-n); }
+
+  function loadProduct() {
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get('id') || 10);
+    const p = PRODUCTS.find(x => x.id === id) || PRODUCTS[0];
+
+    document.title = `${p.name} — OrigamiaaByNavish`;
+    document.getElementById('bc-name').textContent = p.name;
+
+    const saving = p.originalPrice ? Math.round((1 - p.price/p.originalPrice)*100) : 0;
+
+    document.getElementById('product-layout').innerHTML = `
+      <div class="product-gallery">
+        <div class="product-gallery__main" id="main-display">${p.emoji}</div>
+        <div class="product-gallery__thumbs">
+          ${[p.emoji, '📦', '🌸', '✨'].map((e,i) => `
+            <div class="product-gallery__thumb ${i===0?'active':''}" onclick="selectThumb(this,'${e}')">${e}</div>`).join('')}
+        </div>
+      </div>
+
+      <div class="product-info">
+        <div class="product-info__category">${p.category} · ${p.type} · ${p.difficulty}</div>
+        <h1 class="product-info__name">${p.name}</h1>
+        <div class="product-info__rating">
+          <span style="color:var(--gold)">${stars(Math.round(p.rating))}</span>
+          <span>${p.rating} (${p.reviews} reviews)</span>
+        </div>
+
+        <div class="product-info__price-block">
+          <div>
+            <span class="product-info__price">₹${p.price.toLocaleString()}</span>
+            ${p.originalPrice ? `<span class="product-info__price-orig">₹${p.originalPrice.toLocaleString()}</span>` : ''}
+          </div>
+          ${saving ? `<div class="product-info__saving">You save ₹${(p.originalPrice-p.price).toLocaleString()} (${saving}% off)</div>` : ''}
+        </div>
+
+        <p class="product-info__desc">${p.desc} Each piece is lovingly folded by hand and arrives gift-wrapped in kraft paper with a wax seal.</p>
+
+        <div class="product-info__meta">
+          <div class="meta-row"><strong>Material</strong><span>Handpicked washi / mulberry paper</span></div>
+          <div class="meta-row"><strong>Difficulty</strong><span>${p.difficulty.charAt(0).toUpperCase()+p.difficulty.slice(1)}</span></div>
+          <div class="meta-row"><strong>Delivery</strong><span>3–5 business days, PAN India</span></div>
+          <div class="meta-row"><strong>Gift Ready</strong><span>Yes — kraft box & wax seal included</span></div>
+        </div>
+
+        <div class="product-info__actions">
+          <div class="qty-stepper">
+            <button class="qty-minus">−</button>
+            <input type="number" value="1" min="1" max="10" id="qty-input" readonly>
+            <button class="qty-plus">+</button>
+          </div>
+          <button class="btn btn--rust" onclick="addProductToCart()">Add to Cart 🛒</button>
+          <button class="btn btn--outline wishlist-btn" id="wish-btn" onclick="toggleWish()" title="Wishlist">♡ Save</button>
+        </div>
+
+        <div class="product-trust">
+          <div class="trust-item">
+            <div class="trust-item__icon">🚚</div>
+            <div class="trust-item__label">Free Shipping</div>
+            <div class="trust-item__sub">Orders above ₹999</div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-item__icon">🔄</div>
+            <div class="trust-item__label">Easy Returns</div>
+            <div class="trust-item__sub">Within 7 days</div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-item__icon">🎁</div>
+            <div class="trust-item__label">Gift Wrapped</div>
+            <div class="trust-item__sub">Always included</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Re-init qty stepper
+    const stepper = document.querySelector('.qty-stepper');
+    const inp = document.getElementById('qty-input');
+    stepper?.querySelector('.qty-plus')?.addEventListener('click', () => {
+      inp.value = Math.min(10, parseInt(inp.value)+1);
+    });
+    stepper?.querySelector('.qty-minus')?.addEventListener('click', () => {
+      inp.value = Math.max(1, parseInt(inp.value)-1);
+    });
+
+    // Cart
+    window.addProductToCart = () => {
+      const qty = parseInt(document.getElementById('qty-input')?.value || 1);
+      for (let i = 0; i < qty; i++) window.OrigamiSite.addToCart(p);
+    };
+
+    // Wishlist
+    const wl = window.OrigamiSite.getWishlist();
+    if (wl.find(w => w.id === p.id)) {
+      document.getElementById('wish-btn')?.classList.add('active');
+    }
+
+    window.toggleWish = () => {
+      const added = window.OrigamiSite.toggleWishlist(p);
+      document.getElementById('wish-btn')?.classList.toggle('active', added);
+    };
+
+    // Reviews
+    document.getElementById('reviews-list').innerHTML = REVIEWS.map(r => `
+      <div class="review-card">
+        <div class="review-card__header">
+          <span class="review-card__author">${r.author}</span>
+          <span class="review-card__date">${r.date}</span>
+        </div>
+        <div class="review-card__stars">${stars(r.rating)}</div>
+        <div class="review-card__text">${r.text}</div>
+      </div>`).join('');
+
+    // Similar
+    const similar = PRODUCTS.filter(x => x.id !== p.id && x.category === p.category).slice(0, 4);
+    document.getElementById('similar-grid').innerHTML = similar.map(sp => `
+      <div class="product-card">
+        <div class="product-card__image">
+          <a href="product.html?id=${sp.id}">
+            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:5rem;background:var(--cream-dark)">${sp.emoji}</div>
+          </a>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">${sp.category}</div>
+          <div class="product-card__name">${sp.name}</div>
+          <div class="product-card__price"><span class="product-card__price-main">₹${sp.price.toLocaleString()}</span></div>
+        </div>
+        <div class="product-card__footer">
+          <button class="product-card__add-btn" onclick="window.OrigamiSite.addToCart(PRODUCTS.find(x=>x.id==${sp.id}))">+ Add to Cart</button>
+        </div>
+      </div>`).join('');
+  }
+
+  window.selectThumb = (el, emoji) => {
+    document.querySelectorAll('.product-gallery__thumb').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('main-display').textContent = emoji;
+  };
+
+  document.addEventListener('DOMContentLoaded', loadProduct);
+</script>
+</body>
+</html>
